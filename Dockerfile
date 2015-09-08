@@ -6,7 +6,7 @@ RUN apt-get update \
   && echo "deb http://pkg.jenkins-ci.org/debian binary/" > /etc/apt/sources.list.d/jenkins.list \
   && wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add - \
   && apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y jenkins \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y jenkins maven wget curl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/
 
