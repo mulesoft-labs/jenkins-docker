@@ -5,6 +5,7 @@ PLUGINS_ENDPOINT=http://updates.jenkins-ci.org/latest/
 DATA=/var/lib/jenkins
 
 mkdir -p $DATA/plugins
+mkdir -p $DATA/jobs
 
 if find $DATA/plugins -maxdepth 0 -empty | read v; then
     (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/hipchat.hpi)
@@ -15,11 +16,18 @@ if find $DATA/plugins -maxdepth 0 -empty | read v; then
     (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/git-client.hpi)
     (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/git.hpi)
     (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/github.hpi)
-    (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/github-api.hpi)
-    (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/ghprb.hpi)
-    (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/github-oauth.hpi)
     (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/scm-api.hpi)
     (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/postbuild-task.hpi)
+    (cd $DATA/plugins && wget --no-check-certificate https://github.com/adamsdavis1976/misc-binaries/blob/master/mule-mmc.hpi)
+    (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/build-pipeline-plugin.hpi)
+    (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/copyartifact.hpi)
+    (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/ws-cleanup.hpi)
+    (cd $DATA/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/extensible-choice-parameter.hpi)
+
+fi
+
+if find $DATA/jobs -maxdepth 0 -empty | read v; then
+    (cd $DATA/jobs && git clone https://github.com/mulesoft-labs/jenkins-job-examples.git)
 fi
 
 chown -R jenkins $DATA
