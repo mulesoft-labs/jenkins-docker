@@ -5,10 +5,13 @@ RUN apt-get update \
   && apt-get -q -y install wget git openjdk-7-jre-headless \
   && echo "deb http://pkg.jenkins-ci.org/debian binary/" > /etc/apt/sources.list.d/jenkins.list \
   && wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add - \
+  && sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list \
   && apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y jenkins \
+  && apt-get -y upgrade \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y jenkins vim wget curl git maven\
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/
+  
 
 VOLUME /var/lib/jenkins
 ENV JENKINS_HOME /var/lib/jenkins
