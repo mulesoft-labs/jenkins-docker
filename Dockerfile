@@ -9,6 +9,7 @@ RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y jenkins \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/
+  
 
 # update packages and install maven
 RUN  \
