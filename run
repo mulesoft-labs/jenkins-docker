@@ -31,7 +31,7 @@ if find $DATA/plugins -maxdepth 0 -empty | read v; then
 fi
 
 if find $DATA/jobs -maxdepth 0 -empty | read v; then
-    (cd $DATA/jobs && git clone https://github.com/mulesoft-labs/jenkins-job-examples.git)
+    (cd $DATA && git clone https://github.com/mulesoft-labs/jenkins-job-examples.git && mv $DATA/jenkins-job-examples $DATA/jobs )
 fi
 
 chown -R jenkins $DATA
