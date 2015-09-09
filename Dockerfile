@@ -61,10 +61,12 @@ VOLUME /var/lib/jenkins
 
 ENV JENKINS_HOME /var/lib/jenkins
 
-ADD run /usr/local/bin/run
+#ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 
-CMD /usr/local/bin/run
+#CMD /usr/local/bin/run
+
+RUN /usr/local/bin/run
 
 # configure the container to run jenkins, mapping container port 8080 to that host port
 ENTRYPOINT ["java", "-jar", "/opt/jenkins.war"]
