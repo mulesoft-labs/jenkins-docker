@@ -61,12 +61,35 @@ VOLUME /var/lib/jenkins
 
 ENV JENKINS_HOME /var/lib/jenkins
 
-#ADD run /usr/local/bin/run
-RUN chmod +x /usr/local/bin/run
+ENV PLUGINS_ENDPOINT http://updates.jenkins-ci.org/latest/
 
-#CMD /usr/local/bin/run
+RUN mkdir -p $JENKINS_HOME/plugins
+RUN mkdir -p $JENKINS_HOME/jobs
 
-RUN /usr/local/bin/run
+RUN if find $JENKINS_HOME/plugins -maxdepth 0 -empty | read v; then
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/credentials.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/git-client.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/git.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/github.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/scm-api.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/postbuild-task.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate -O mule-mmc.hpi https://github.com/adamsdavis1976/misc-binaries/blob/master/mule-mmc.hpi?raw=true)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/build-pipeline-plugin.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/copyartifact.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/ws-cleanup.hpi)
+    (cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/extensible-choice-parameter.hpi)
+	(cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/jquery.hpi)
+	(cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/parameterized-trigger.hpi)
+	(cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/workflow-step-api.hpi)
+	(cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/plain-credentials.hpi)
+	(cd $JENKINS_HOME/plugins && wget --no-check-certificate $PLUGINS_ENDPOINT/github-api.hpi)
+fi
+
+RUN if find $JENKINS_HOME/jobs -maxdepth 0 -empty | read v; then
+    (cd $JENKINS_HOME && git clone https://github.com/mulesoft-labs/jenkins-config.git && mv $JENKINS_HOME/jenkins-config/jobs/ $JENKINS_HOME/ && mv $JENKINS_HOME/jenkins-config/*.xml $JENKINS_HOME/ && mv $JENKINS_HOME/jenkins-config/maven_settings/ $JENKINS_HOME/ )
+fi
+
+RUN chown -R jenkins $JENKINS_HOME
 
 # configure the container to run jenkins, mapping container port 8080 to that host port
 ENTRYPOINT ["java", "-jar", "/opt/jenkins.war"]
