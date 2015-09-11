@@ -1,4 +1,0 @@
-images:
-  - name: zaiste/jenkins
-    path: "./"
-    test: ["./tests/jenkins"]
