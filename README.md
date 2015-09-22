@@ -23,13 +23,22 @@ These can be update in the docker container using the following command
 Jenkins can then force the conbfiguration to be pulled from disk via 
 
     Manage Jenkins > Reload Configuration from Disk
-  
-##Configuration 
+
+###Run container (from image built from this repo) 
+
+    docker build <dockerfile dir>
+    docker run -d -t -p 8080:8080 --name=jenkins <image id from build step>
+    
+###Run container (from image on Docker Hub)
+
+    docker run -d -t -p 8080:8080 --name=jenkins adamsdavis/docker-jenkins:1
+
+##Required dependent containers 
 ###Nexus
 
 The jenkins image requires a nexus instance to interface with. 
 
-  docker run -d -p 8081:8081 --name nexus sonatype/nexus:oss
+    docker run -d -p 8081:8081 --name nexus sonatype/nexus:oss
   
 ###MMC && Mule
 The jenkins image also requires MMC and a Mule instance for some jobs to test against
